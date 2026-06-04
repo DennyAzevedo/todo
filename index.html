@@ -29,20 +29,43 @@
 
     <main id="main" class="card">
       <form id="todo-form" class="todo-form" autocomplete="off">
-        <label class="sr-only" for="todo-input">Nova tarefa</label>
-        <input
-          id="todo-input"
-          class="todo-form__input"
-          type="text"
-          name="task"
-          placeholder="O que você precisa fazer?"
-          maxlength="120"
-          required
-        />
-        <button class="todo-form__btn" type="submit" aria-label="Adicionar tarefa">
-          <span aria-hidden="true">+</span>
-          <span class="todo-form__btn-text">Adicionar</span>
-        </button>
+        <div class="todo-form__row">
+          <label class="sr-only" for="todo-input">Título da tarefa</label>
+          <input
+            id="todo-input"
+            class="todo-form__input"
+            type="text"
+            name="task"
+            placeholder="O que você precisa fazer?"
+            maxlength="120"
+            required
+          />
+          <button class="todo-form__btn" type="submit" aria-label="Adicionar tarefa">
+            <span aria-hidden="true">+</span>
+            <span class="todo-form__btn-text">Adicionar</span>
+          </button>
+        </div>
+
+        <div class="todo-form__details">
+          <label class="sr-only" for="todo-desc">Descrição da tarefa</label>
+          <textarea
+            id="todo-desc"
+            class="todo-form__textarea"
+            name="description"
+            placeholder="Descrição (opcional)"
+            maxlength="500"
+            rows="2"
+          ></textarea>
+
+          <div class="todo-form__priority">
+            <label for="todo-priority">Prioridade</label>
+            <select id="todo-priority" class="todo-form__select" name="priority">
+              <option value="low">Baixa</option>
+              <option value="medium" selected>Moderada</option>
+              <option value="high">Alta</option>
+            </select>
+          </div>
+        </div>
       </form>
 
       <section class="toolbar" aria-label="Filtros e progresso">
@@ -69,6 +92,77 @@
     </main>
 
     <p class="app__hint">Suas tarefas são salvas automaticamente neste navegador.</p>
+  </div>
+
+  <div id="modal-overlay" class="modal-overlay" hidden>
+    <div
+      id="task-modal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+    >
+      <button id="modal-close" class="modal__close" type="button" aria-label="Fechar">
+        <span aria-hidden="true">&times;</span>
+      </button>
+
+      <!-- Modo de visualização -->
+      <div id="modal-view" class="modal__view">
+        <span id="modal-badge" class="priority-badge"></span>
+        <h2 id="modal-title" class="modal__title"></h2>
+
+        <dl class="modal__meta">
+          <div class="modal__meta-item">
+            <dt>Status</dt>
+            <dd id="modal-status"></dd>
+          </div>
+          <div class="modal__meta-item">
+            <dt>Prioridade</dt>
+            <dd id="modal-priority"></dd>
+          </div>
+        </dl>
+
+        <div class="modal__section">
+          <h3 class="modal__section-title">Descrição</h3>
+          <p id="modal-desc" class="modal__desc"></p>
+        </div>
+
+        <div class="modal__actions">
+          <button id="modal-toggle" class="btn btn--soft" type="button"></button>
+          <button id="modal-edit" class="btn btn--primary" type="button">Editar</button>
+          <button id="modal-delete" class="btn btn--danger" type="button">Excluir</button>
+        </div>
+      </div>
+
+      <!-- Modo de edição -->
+      <form id="modal-edit-form" class="modal__edit" hidden>
+        <h2 class="modal__title">Editar tarefa</h2>
+
+        <label class="field">
+          <span class="field__label">Título</span>
+          <input id="modal-edit-title" class="field__input" type="text" maxlength="120" required />
+        </label>
+
+        <label class="field">
+          <span class="field__label">Descrição</span>
+          <textarea id="modal-edit-desc" class="field__input" rows="4" maxlength="500" placeholder="Descrição (opcional)"></textarea>
+        </label>
+
+        <label class="field">
+          <span class="field__label">Prioridade</span>
+          <select id="modal-edit-priority" class="field__input">
+            <option value="low">Baixa</option>
+            <option value="medium">Moderada</option>
+            <option value="high">Alta</option>
+          </select>
+        </label>
+
+        <div class="modal__actions">
+          <button type="button" id="modal-cancel" class="btn btn--soft">Cancelar</button>
+          <button type="submit" class="btn btn--primary">Salvar</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <script src="script.js"></script>

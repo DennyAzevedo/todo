@@ -4,9 +4,10 @@ Um sistema de lista de tarefas simples, responsivo e agradável de usar, feito a
 
 ## ✨ Funcionalidades
 
-- ➕ Adicionar tarefas
+- ➕ Adicionar tarefas com **título**, **descrição** (opcional) e **prioridade**
+- 🚦 Prioridades **Alta**, **Moderada** e **Baixa**, com cores de destaque e ordenação automática
 - ✅ Marcar como concluída / ativa
-- ✏️ Editar tarefa (duplo clique sobre o texto)
+- ✏️ Editar tarefa (duplo clique) — título, descrição e prioridade
 - 🗑️ Excluir tarefa
 - 🔍 Filtros: **Todas**, **Ativas** e **Concluídas**
 - 🧹 Limpar todas as concluídas de uma vez
