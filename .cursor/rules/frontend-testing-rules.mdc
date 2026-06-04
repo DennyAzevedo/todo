@@ -1,0 +1,70 @@
+# Frontend Testing Rules
+
+## General
+- Write testable code by design.
+- Prefer testing behavior over implementation details.
+- Tests must reflect real user and business scenarios.
+
+## Test Location (MANDATORY)
+- Do NOT colocate tests next to implementation files.
+- Always place tests in a dedicated `tests` folder.
+
+## Folder Structure
+- Organize tests mirroring the source structure.
+
+Example:
+
+src/
+  features/
+    user/
+      components/
+        UserCard.tsx
+
+tests/
+  features/
+    user/
+      components/
+        UserCard.test.tsx
+
+## Naming
+- Use clear and descriptive names:
+  - ComponentName.test.tsx
+  - useFeature.test.ts
+  - serviceName.test.ts
+
+## Scope
+- Unit test:
+  - domain logic
+  - mappers
+  - validators
+  - utilities
+  - hooks/composables/stores
+- Component test:
+  - rendering
+  - interactions
+  - conditional states
+- Integration test:
+  - user flows
+  - API interactions (mocked or real depending on context)
+
+## Principles
+- Avoid tightly coupling tests to implementation details.
+- Prefer Arrange / Act / Assert structure.
+- Keep tests small and focused.
+- Cover:
+  - happy path
+  - edge cases
+  - expected failures
+
+## Frontend-specific
+- Always test:
+  - loading state
+  - empty state
+  - error state
+- Test form validation clearly.
+- Test user interactions explicitly.
+
+## Constraints
+- Do NOT create test files inside component folders.
+- Do NOT mix production and test code in the same directory.
+- Always mirror structure for easy navigation.

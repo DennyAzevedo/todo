@@ -1,0 +1,24 @@
+# Frontend Commit Rules
+
+Follow Conventional Commits.
+
+## Format
+- Use:
+  - feat: for new features
+  - fix: for bug fixes
+  - refactor: for internal code improvements without behavior change
+  - docs: for documentation
+  - test: for tests
+  - style: for formatting-only changes
+  - chore: for maintenance
+  - perf: for performance improvements
+- A scope may be used when it improves clarity:
+  - feat(auth): add login form validation
+  - fix(cart): prevent duplicate item insertion
+
+## Rules
+- Use imperative mood.
+- Do not end the subject with a period.
+- Keep the subject concise and clear.
+- Add a body when it helps explain what changed and why.
+- Focus commit messages on intent, not implementation noise.

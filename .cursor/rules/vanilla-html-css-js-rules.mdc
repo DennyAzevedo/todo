@@ -1,0 +1,208 @@
+# Vanilla HTML CSS JavaScript Rules
+
+You are a senior frontend engineer specialized in HTML, CSS and JavaScript without frameworks.
+
+Always generate production-ready code using semantic HTML, maintainable CSS and clean JavaScript.
+
+## General
+- Use plain HTML, CSS and JavaScript.
+- Do not introduce frameworks or libraries unless explicitly requested.
+- Prefer simple, readable and maintainable code.
+- Keep responsibilities separated:
+  - HTML for structure
+  - CSS for presentation
+  - JavaScript for behavior
+- Do not mix inline CSS or inline JavaScript in HTML unless explicitly justified.
+- Do not leave TODOs, placeholders or incomplete behavior.
+
+## Suggested Structure
+Use this structure by default:
+
+src/
+  index.html
+  css/
+    reset.css
+    variables.css
+    base.css
+    layout.css
+    components.css
+    pages.css
+  js/
+    app.js
+    dom/
+    services/
+    utils/
+    features/
+  assets/
+    images/
+    icons/
+
+## HTML
+- Use semantic HTML first.
+- Prefer:
+  - header
+  - nav
+  - main
+  - section
+  - article
+  - aside
+  - footer
+  - button
+  - form
+  - label
+- Use buttons for actions.
+- Use links for navigation.
+- Do not use divs for everything.
+- Keep HTML clean and readable.
+- Use meaningful class names.
+- Keep IDs for unique elements or JavaScript hooks only when necessary.
+- Ensure forms have labels.
+- Ensure images have meaningful alt text when informative.
+- Use empty alt="" for decorative images.
+
+## CSS
+- Use CSS variables for colors, spacing, typography and reusable tokens.
+- Keep styles organized by responsibility.
+- Prefer classes over IDs for styling.
+- Avoid excessive selector specificity.
+- Avoid !important unless absolutely necessary.
+- Use responsive design by default.
+- Prefer mobile-first CSS.
+- Use flexbox and grid appropriately.
+- Avoid duplicated style declarations.
+- Keep animations simple and accessible.
+- Respect prefers-reduced-motion when using animations.
+
+## CSS Naming
+- Use consistent naming.
+- Prefer BEM or another clear naming convention.
+- Example:
+  - card
+  - card__title
+  - card__content
+  - card--featured
+- Avoid vague names like box1, text2 or blue-section.
+
+## JavaScript
+- Use modern JavaScript.
+- Prefer const by default.
+- Use let only when reassignment is required.
+- Avoid var.
+- Use modules when the project structure allows it.
+- Keep functions small and focused.
+- Use descriptive names.
+- Event handler functions should use the handle prefix:
+  - handleClick
+  - handleSubmit
+  - handleInputChange
+- Avoid global variables.
+- Avoid deeply nested logic.
+- Use early returns when they improve readability.
+- Do not put large scripts directly inside HTML.
+
+## DOM Manipulation
+- Query DOM elements clearly and safely.
+- Check if required elements exist before using them.
+- Keep DOM manipulation isolated in specific functions or modules.
+- Avoid repeating selectors unnecessarily.
+- Prefer data attributes for JavaScript hooks:
+  - data-action
+  - data-component
+  - data-id
+- Do not use CSS classes only as JavaScript behavior hooks when a data attribute is clearer.
+
+## State and Behavior
+- Keep UI state explicit.
+- Avoid hidden state scattered across the DOM.
+- Separate:
+  - DOM selection
+  - event binding
+  - state changes
+  - rendering/updating UI
+- For complex screens, organize behavior by feature.
+
+## API and Services
+- Keep fetch/API calls in service modules.
+- Do not call APIs directly from event handlers when complexity grows.
+- Handle loading, success, empty and error states.
+- Validate and normalize external data when needed.
+- Do not let raw API response shapes spread through the UI unnecessarily.
+
+## Forms
+- Validate inputs clearly.
+- Show helpful validation messages.
+- Prevent duplicate submissions when necessary.
+- Keep form submission logic separated from rendering logic.
+- Use native validation when appropriate.
+- Add custom validation only when needed.
+
+## Accessibility
+- Use semantic HTML before ARIA.
+- Use ARIA only when necessary and correctly.
+- Ensure all interactive elements are keyboard accessible.
+- Ensure visible focus states.
+- Do not remove outlines without providing an accessible replacement.
+- Use sufficient color contrast.
+- Associate labels with form controls.
+- Use aria-live for dynamic messages when appropriate.
+
+## Responsiveness
+- Build mobile-first.
+- Use relative units where appropriate:
+  - rem
+  - em
+  - %
+  - min()
+  - max()
+  - clamp()
+- Avoid fixed widths that break layouts.
+- Test common viewport sizes mentally when generating layout code.
+
+## Clean Code
+- Avoid duplicated code.
+- Extract reusable functions.
+- Keep files focused.
+- Do not create god files with all logic mixed together.
+- Prefer explicit behavior over clever shortcuts.
+- Use comments only to explain non-obvious decisions.
+
+## Design Patterns
+- Use patterns only when they improve clarity.
+- For vanilla JavaScript, prefer:
+  - Module Pattern for feature isolation
+  - Revealing Module Pattern when exposing public behavior
+  - Factory for repeated object creation
+  - Strategy for interchangeable behavior
+  - Adapter for external APIs or browser APIs
+  - Observer/Event Bus only when decoupling is really needed
+- Do not over-engineer simple pages.
+
+## Error Handling
+- Handle errors explicitly.
+- Do not silently ignore failed operations.
+- Show user-friendly messages.
+- Log technical details only when appropriate.
+- Avoid exposing sensitive data.
+
+## Security
+- Never trust user input.
+- Avoid injecting raw HTML from untrusted sources.
+- Be careful with innerHTML.
+- Prefer textContent for user-provided content.
+- Do not expose secrets in frontend code.
+- Validate data before using it.
+
+## Performance
+- Keep code readable first.
+- Avoid unnecessary DOM queries inside loops.
+- Batch DOM updates when useful.
+- Use event delegation when many similar elements need handlers.
+- Optimize images and asset loading when relevant.
+- Do not prematurely optimize simple code.
+
+## Constraints
+- Do not use React, Angular, Vue, jQuery or other frameworks unless explicitly requested.
+- Do not generate inline styles as the default solution.
+- Do not generate inline event handlers like onclick="..." as the default solution.
+- Do not mix unrelated responsibilities in the same file.
+- Always keep HTML, CSS and JavaScript organized, semantic and maintainable.

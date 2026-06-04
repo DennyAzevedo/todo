@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Uma lista de tarefas simples, responsiva e agradável de usar." />
+  <title>Minhas Tarefas · TODO List</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Pular para o conteúdo</a>
+
+  <div class="app">
+    <header class="app__header">
+      <div class="app__title">
+        <span class="app__logo" aria-hidden="true">✓</span>
+        <div>
+          <h1>Minhas Tarefas</h1>
+          <p class="app__subtitle" id="date-label"></p>
+        </div>
+      </div>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Alternar tema claro e escuro">
+        <span class="theme-toggle__icon" aria-hidden="true">🌙</span>
+      </button>
+    </header>
+
+    <main id="main" class="card">
+      <form id="todo-form" class="todo-form" autocomplete="off">
+        <label class="sr-only" for="todo-input">Nova tarefa</label>
+        <input
+          id="todo-input"
+          class="todo-form__input"
+          type="text"
+          name="task"
+          placeholder="O que você precisa fazer?"
+          maxlength="120"
+          required
+        />
+        <button class="todo-form__btn" type="submit" aria-label="Adicionar tarefa">
+          <span aria-hidden="true">+</span>
+          <span class="todo-form__btn-text">Adicionar</span>
+        </button>
+      </form>
+
+      <section class="toolbar" aria-label="Filtros e progresso">
+        <div class="filters" role="tablist" aria-label="Filtrar tarefas">
+          <button class="filter is-active" type="button" role="tab" data-filter="all" aria-selected="true">Todas</button>
+          <button class="filter" type="button" role="tab" data-filter="active" aria-selected="false">Ativas</button>
+          <button class="filter" type="button" role="tab" data-filter="completed" aria-selected="false">Concluídas</button>
+        </div>
+        <p class="progress" id="progress" aria-live="polite">0 de 0 concluídas</p>
+      </section>
+
+      <ul id="todo-list" class="todo-list" aria-live="polite"></ul>
+
+      <div id="empty-state" class="empty-state" hidden>
+        <span class="empty-state__icon" aria-hidden="true">🗒️</span>
+        <p class="empty-state__title">Tudo limpo por aqui</p>
+        <p class="empty-state__text">Adicione sua primeira tarefa para começar.</p>
+      </div>
+
+      <footer class="card__footer">
+        <span id="items-left">0 itens restantes</span>
+        <button id="clear-completed" class="link-btn" type="button">Limpar concluídas</button>
+      </footer>
+    </main>
+
+    <p class="app__hint">Suas tarefas são salvas automaticamente neste navegador.</p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
