@@ -7,8 +7,9 @@ Um sistema de lista de tarefas simples, responsivo e agradável de usar, feito a
 - ➕ Adicionar tarefas com **título**, **descrição** (opcional) e **prioridade**
 - 🚦 Prioridades **Alta**, **Moderada** e **Baixa**, com cores de destaque e ordenação automática
 - ✅ Marcar como concluída / ativa
-- ✏️ Editar tarefa (duplo clique) — título, descrição e prioridade
-- 🗑️ Excluir tarefa
+- 👁️ Visualizar a tarefa em detalhe num **modal**, com opções de editar, excluir e alternar status
+- ✏️ Editar tarefa (duplo clique na lista ou pelo modal) — título, descrição e prioridade
+- 🗑️ Excluir tarefa (na lista ou pelo modal), sempre com **diálogo de confirmação**
 - 🔍 Filtros: **Todas**, **Ativas** e **Concluídas**
 - 🧹 Limpar todas as concluídas de uma vez
 - 📊 Indicador de progresso e contador de itens restantes
@@ -54,6 +55,7 @@ todo/
 ## ⌨️ Atalhos
 
 - **Enter** no campo de texto: adiciona a tarefa
-- **Duplo clique** no texto: editar
+- **Duplo clique** no texto: editar inline
+- 👁️ (ícone de olho): abrir o modal de detalhes
 - **Enter** durante a edição: salvar
-- **Esc** durante a edição: cancelar
+- **Esc**: cancelar a edição / fechar o modal

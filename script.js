@@ -44,8 +44,17 @@
   const modalEditPriority = document.getElementById("modal-edit-priority");
   const modalCancel = document.getElementById("modal-cancel");
 
+  const confirmOverlay = document.getElementById("confirm-overlay");
+  const confirmDialog = confirmOverlay.querySelector(".modal--confirm");
+  const confirmText = document.getElementById("confirm-text");
+  const confirmOk = document.getElementById("confirm-ok");
+  const confirmCancel = document.getElementById("confirm-cancel");
+
   let activeTaskId = null;
   let lastFocusedEl = null;
+  let confirmOpen = false;
+  let confirmResolver = null;
+  let confirmLastFocus = null;
 
   /* ===== Persistência ===== */
   function loadTasks() {
@@ -231,7 +240,7 @@
     del.className = "todo-item__icon-btn todo-item__delete";
     del.innerHTML = "&times;";
     del.setAttribute("aria-label", `Excluir tarefa: ${task.text}`);
-    del.addEventListener("click", () => deleteTask(task.id));
+    del.addEventListener("click", () => requestDelete(task.id));
 
     actions.append(view, del);
     li.append(label, body, actions);
@@ -311,6 +320,209 @@
     });
   }
 
+  /* ===== Modal de detalhes ===== */
+  function showViewMode() {
+    modalView.hidden = false;
+    modalEditForm.hidden = true;
+  }
+
+  function renderModal() {
+    const task = tasks.find((t) => t.id === activeTaskId);
+    if (!task) {
+      closeModal();
+      return;
+    }
+
+    modalBadge.textContent = PRIORITIES[task.priority].label;
+    modalBadge.className =
+      "priority-badge priority-badge--" + task.priority;
+
+    modalTitle.textContent = task.text;
+    modalTitle.classList.toggle("is-completed", task.completed);
+
+    modalStatus.textContent = task.completed ? "Concluída" : "Ativa";
+    modalStatus.className =
+      "status-pill " + (task.completed ? "status-pill--done" : "status-pill--active");
+
+    modalPriority.textContent = PRIORITIES[task.priority].label;
+
+    if (task.description) {
+      modalDesc.textContent = task.description;
+      modalDesc.classList.remove("is-empty");
+    } else {
+      modalDesc.textContent = "Sem descrição.";
+      modalDesc.classList.add("is-empty");
+    }
+
+    modalToggle.textContent = task.completed
+      ? "Marcar como ativa"
+      : "Marcar como concluída";
+  }
+
+  function openModal(id) {
+    activeTaskId = id;
+    lastFocusedEl = document.activeElement;
+    showViewMode();
+    renderModal();
+    modalOverlay.hidden = false;
+    document.body.classList.add("modal-open");
+    modalClose.focus();
+    document.addEventListener("keydown", onModalKeydown);
+  }
+
+  function closeModal() {
+    modalOverlay.hidden = true;
+    document.body.classList.remove("modal-open");
+    document.removeEventListener("keydown", onModalKeydown);
+    activeTaskId = null;
+    if (lastFocusedEl && typeof lastFocusedEl.focus === "function") {
+      lastFocusedEl.focus();
+    }
+  }
+
+  function enterModalEdit() {
+    const task = tasks.find((t) => t.id === activeTaskId);
+    if (!task) return;
+    modalEditTitle.value = task.text;
+    modalEditDesc.value = task.description;
+    modalEditPriority.value = task.priority;
+    modalView.hidden = true;
+    modalEditForm.hidden = false;
+    modalEditTitle.focus();
+  }
+
+  function onModalKeydown(e) {
+    if (confirmOpen) return;
+    if (e.key === "Escape") {
+      e.preventDefault();
+      if (!modalEditForm.hidden) {
+        showViewMode();
+        renderModal();
+        modalEditBtn.focus();
+      } else {
+        closeModal();
+      }
+      return;
+    }
+    if (e.key === "Tab") {
+      const container = modalEditForm.hidden ? modalView : modalEditForm;
+      trapFocus(e, [modalClose, ...getFocusable(container)]);
+    }
+  }
+
+  function getFocusable(container) {
+    return [
+      ...container.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      ),
+    ].filter((el) => !el.disabled && el.offsetParent !== null);
+  }
+
+  function trapFocus(e, focusable) {
+    if (focusable.length === 0) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
+
+  /* ===== Confirmação de exclusão ===== */
+  function askConfirm(message) {
+    return new Promise((resolve) => {
+      confirmResolver = resolve;
+      confirmOpen = true;
+      confirmText.textContent = message;
+      confirmLastFocus = document.activeElement;
+      confirmOverlay.hidden = false;
+      document.body.classList.add("modal-open");
+      confirmOk.focus();
+      document.addEventListener("keydown", onConfirmKeydown);
+    });
+  }
+
+  function closeConfirm(result) {
+    confirmOverlay.hidden = true;
+    document.removeEventListener("keydown", onConfirmKeydown);
+    confirmOpen = false;
+    if (modalOverlay.hidden) {
+      document.body.classList.remove("modal-open");
+    }
+    const resolve = confirmResolver;
+    confirmResolver = null;
+    if (confirmLastFocus && typeof confirmLastFocus.focus === "function") {
+      confirmLastFocus.focus();
+    }
+    if (resolve) resolve(result);
+  }
+
+  function onConfirmKeydown(e) {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      closeConfirm(false);
+    } else if (e.key === "Tab") {
+      trapFocus(e, getFocusable(confirmDialog));
+    }
+  }
+
+  async function requestDelete(id) {
+    const task = tasks.find((t) => t.id === id);
+    if (!task) return false;
+    const confirmed = await askConfirm(
+      `A tarefa "${task.text}" será removida permanentemente.`
+    );
+    if (confirmed) deleteTask(id);
+    return confirmed;
+  }
+
+  confirmOk.addEventListener("click", () => closeConfirm(true));
+  confirmCancel.addEventListener("click", () => closeConfirm(false));
+  confirmOverlay.addEventListener("click", (e) => {
+    if (e.target === confirmOverlay) closeConfirm(false);
+  });
+
+  modalClose.addEventListener("click", closeModal);
+  modalOverlay.addEventListener("click", (e) => {
+    if (e.target === modalOverlay) closeModal();
+  });
+  modalEditBtn.addEventListener("click", enterModalEdit);
+  modalCancel.addEventListener("click", () => {
+    showViewMode();
+    renderModal();
+    modalEditBtn.focus();
+  });
+  modalToggle.addEventListener("click", () => {
+    if (activeTaskId) {
+      toggleTask(activeTaskId);
+      renderModal();
+    }
+  });
+  modalDeleteBtn.addEventListener("click", async () => {
+    if (!activeTaskId) return;
+    const confirmed = await requestDelete(activeTaskId);
+    if (confirmed) closeModal();
+  });
+  modalEditForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!activeTaskId) return;
+    editTask(activeTaskId, {
+      text: modalEditTitle.value,
+      description: modalEditDesc.value,
+      priority: modalEditPriority.value,
+    });
+    if (tasks.some((t) => t.id === activeTaskId)) {
+      showViewMode();
+      renderModal();
+      modalEditBtn.focus();
+    } else {
+      closeModal();
+    }
+  });
+
   /* ===== Tema ===== */
   function applyTheme(theme) {
     document.documentElement.setAttribute("data-theme", theme);
@@ -372,7 +584,16 @@
     });
   });
 
-  clearBtn.addEventListener("click", clearCompleted);
+  clearBtn.addEventListener("click", async () => {
+    const count = tasks.filter((t) => t.completed).length;
+    if (count === 0) return;
+    const confirmed = await askConfirm(
+      `${count} tarefa${count === 1 ? "" : "s"} concluída${
+        count === 1 ? "" : "s"
+      } ${count === 1 ? "será removida" : "serão removidas"}.`
+    );
+    if (confirmed) clearCompleted();
+  });
   themeToggle.addEventListener("click", toggleTheme);
 
   /* ===== Inicialização ===== */
