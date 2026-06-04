@@ -24,7 +24,7 @@ Um sistema de lista de tarefas simples, responsivo e agradável de usar, feito a
 - **Feedback imediato**: animações sutis, estados de foco/hover e mensagens vivas (`aria-live`).
 - **Estado vazio** com orientação clara para o próximo passo.
 - **Hierarquia visual** clara entre título, ações e conteúdo.
-- **Acessibilidade**: navegação por teclado, `aria-labels`, link "pular para o conteúdo", foco visível e suporte a `prefers-reduced-motion`.
+- **Acessibilidade**: navegação por teclado, `aria-labels`, diálogos com `role="dialog"`/`alertdialog` e foco preso, foco visível e suporte a `prefers-reduced-motion`.
 
 ## 🚀 Como usar
 
@@ -60,3 +60,27 @@ todo/
 - 👁️ (ícone de olho): abrir o modal de detalhes
 - **Enter** durante a edição: salvar
 - **Esc**: cancelar a edição / fechar o modal
+
+## 🤖 Desenvolvimento com o Cursor
+
+Este projeto foi desenvolvido inteiramente com o auxílio do **[Cursor](https://cursor.com)** (editor com IA), por meio de prompts em linguagem natural, **sem intervenção direta no código**. Abaixo estão, em ordem, os prompts utilizados para construir e evoluir a aplicação:
+
+1. **Criação inicial**
+   > Criar um projeto de sistema de uma TODO List, utilizando HTML5, CSS3 e JavaScript.
+   >
+   > Crie um interface responsiva, que utilize os principais princípios do UX Designer e tenha cores suaves e agradáveis.
+
+2. **Prioridade e descrição**
+   > Perfeito. Mas além do título da tarefa quero colocar uma prioridade (vamos atuar com alta, moderada e baixo - com cores destacando a prioridade) e uma descrição das tarefas.
+
+3. **Visualização em modal**
+   > Para uma melhor visualização, quero poder visualizar uma tarefa em uma janela modal ou página individual, o que ficar melhor visualmente, e dentro das regras de UX. Podendo editar e excluir a tarefa nesta janela ou página. Não retirar a funcionalidade que já temos de edição e exclusão na tela principal.
+
+4. **Correção do modal**
+   > O modal está aberto de forma constante, e não fecha. Corrigir o problema, ele deve abrir para uma tarefa específica que eu selecionar.
+
+5. **Confirmação de exclusão e limpeza**
+   > Nas exclusões, pedir uma confirmação para efetuar a mesma. E verificar um elemento com o texto "Pular para o conteúdo" que foi colocado no início da página e não tem funcionalidade, remover.
+
+6. **Busca e filtro por prioridade**
+   > Adicionar uma busca por título da tarefa e um filtro por prioridade.
