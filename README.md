@@ -10,7 +10,8 @@ Um sistema de lista de tarefas simples, responsivo e agradável de usar, feito a
 - 👁️ Visualizar a tarefa em detalhe num **modal**, com opções de editar, excluir e alternar status
 - ✏️ Editar tarefa (duplo clique na lista ou pelo modal) — título, descrição e prioridade
 - 🗑️ Excluir tarefa (na lista ou pelo modal), sempre com **diálogo de confirmação**
-- 🔍 Filtros: **Todas**, **Ativas** e **Concluídas**
+- 🔎 **Busca** por título da tarefa (com botão para limpar)
+- 🔍 Filtros por **status** (Todas / Ativas / Concluídas) e por **prioridade** (Alta / Moderada / Baixa)
 - 🧹 Limpar todas as concluídas de uma vez
 - 📊 Indicador de progresso e contador de itens restantes
 - 💾 Persistência automática no navegador (`localStorage`)

@@ -7,6 +7,8 @@
   /** @type {{ id: string, text: string, description: string, priority: string, completed: boolean }[]} */
   let tasks = [];
   let currentFilter = "all";
+  let priorityFilter = "all";
+  let searchQuery = "";
 
   const PRIORITIES = {
     high: { label: "Alta", order: 0 },
@@ -24,6 +26,9 @@
   const itemsLeft = document.getElementById("items-left");
   const clearBtn = document.getElementById("clear-completed");
   const filterButtons = document.querySelectorAll(".filter");
+  const priorityFilterSelect = document.getElementById("priority-filter");
+  const searchInput = document.getElementById("search-input");
+  const searchClear = document.getElementById("search-clear");
   const themeToggle = document.getElementById("theme-toggle");
   const dateLabel = document.getElementById("date-label");
 
@@ -130,12 +135,17 @@
 
   /* ===== Render ===== */
   function getVisibleTasks() {
-    let result = tasks;
-    if (currentFilter === "active") result = tasks.filter((t) => !t.completed);
-    else if (currentFilter === "completed")
-      result = tasks.filter((t) => t.completed);
+    const query = searchQuery.trim().toLowerCase();
+    const result = tasks.filter((t) => {
+      if (currentFilter === "active" && t.completed) return false;
+      if (currentFilter === "completed" && !t.completed) return false;
+      if (priorityFilter !== "all" && t.priority !== priorityFilter)
+        return false;
+      if (query && !t.text.toLowerCase().includes(query)) return false;
+      return true;
+    });
 
-    return [...result].sort((a, b) => {
+    return result.sort((a, b) => {
       if (a.completed !== b.completed) return a.completed ? 1 : -1;
       return PRIORITIES[a.priority].order - PRIORITIES[b.priority].order;
     });
@@ -149,13 +159,17 @@
 
     const hasTasks = tasks.length > 0;
     const hasVisible = visible.length > 0;
+    const isFiltering =
+      currentFilter !== "all" ||
+      priorityFilter !== "all" ||
+      searchQuery.trim() !== "";
     emptyState.hidden = hasVisible;
 
-    if (hasTasks && !hasVisible) {
+    if (hasTasks && !hasVisible && isFiltering) {
       emptyState.querySelector(".empty-state__title").textContent =
-        "Nada para mostrar";
+        "Nada encontrado";
       emptyState.querySelector(".empty-state__text").textContent =
-        "Nenhuma tarefa neste filtro.";
+        "Tente ajustar a busca ou os filtros.";
     } else {
       emptyState.querySelector(".empty-state__title").textContent =
         "Tudo limpo por aqui";
@@ -582,6 +596,25 @@
       });
       render();
     });
+  });
+
+  priorityFilterSelect.addEventListener("change", () => {
+    priorityFilter = priorityFilterSelect.value;
+    render();
+  });
+
+  searchInput.addEventListener("input", () => {
+    searchQuery = searchInput.value;
+    searchClear.hidden = searchQuery === "";
+    render();
+  });
+
+  searchClear.addEventListener("click", () => {
+    searchInput.value = "";
+    searchQuery = "";
+    searchClear.hidden = true;
+    searchInput.focus();
+    render();
   });
 
   clearBtn.addEventListener("click", async () => {

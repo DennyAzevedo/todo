@@ -66,12 +66,34 @@
         </div>
       </form>
 
+      <div class="search">
+        <span class="search__icon" aria-hidden="true">🔍</span>
+        <label class="sr-only" for="search-input">Buscar tarefa por título</label>
+        <input
+          id="search-input"
+          class="search__input"
+          type="search"
+          placeholder="Buscar por título..."
+          autocomplete="off"
+        />
+        <button id="search-clear" class="search__clear" type="button" aria-label="Limpar busca" hidden>
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
       <section class="toolbar" aria-label="Filtros e progresso">
-        <div class="filters" role="tablist" aria-label="Filtrar tarefas">
+        <div class="filters" role="tablist" aria-label="Filtrar por status">
           <button class="filter is-active" type="button" role="tab" data-filter="all" aria-selected="true">Todas</button>
           <button class="filter" type="button" role="tab" data-filter="active" aria-selected="false">Ativas</button>
           <button class="filter" type="button" role="tab" data-filter="completed" aria-selected="false">Concluídas</button>
         </div>
+        <label class="sr-only" for="priority-filter">Filtrar por prioridade</label>
+        <select id="priority-filter" class="priority-filter">
+          <option value="all">Todas prioridades</option>
+          <option value="high">Alta</option>
+          <option value="medium">Moderada</option>
+          <option value="low">Baixa</option>
+        </select>
         <p class="progress" id="progress" aria-live="polite">0 de 0 concluídas</p>
       </section>
 
